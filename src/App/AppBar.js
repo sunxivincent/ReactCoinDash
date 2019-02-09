@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
+import {AppContext} from "./AppProvider";
 
 const Bar = styled.div `
     display: grid;
@@ -18,21 +19,25 @@ const ControlButtonElement = styled.div`
     `};
 `
 
-function ControlButton({name, active}) {
-    return (
-        <ControlButtonElement active={active}>
-            {name}
+function ControlButton({name}) {
+  return (
+    <AppContext.Consumer>
+      {({page}) => (
+        <ControlButtonElement active={name === page}>
+          {name}
         </ControlButtonElement>
-    )
+      )}
+    </AppContext.Consumer>
+  )
 }
 
 export default function () {
-    return (
-        <Bar>
-            <Logo>Crypto Dash</Logo>
-            <div/>
-            <ControlButton active name="Dashboard"/>
-            <ControlButton name="Setting" />
-        </Bar>
-    );
+  return (
+    <Bar>
+      <Logo>Crypto Dash</Logo>
+      <div/>
+      <ControlButton name="Dashboard"/>
+      <ControlButton name="Setting"/>
+    </Bar>
+  );
 }
