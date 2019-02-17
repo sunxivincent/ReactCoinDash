@@ -22,8 +22,11 @@ const ControlButtonElement = styled.div`
 function ControlButton({name}) {
   return (
     <AppContext.Consumer>
-      {({page}) => (
-        <ControlButtonElement active={name === page}>
+      {({page, setPage}) => (
+        <ControlButtonElement
+          active={name === page}
+          onClick={() => setPage(name)}
+        >
           {name}
         </ControlButtonElement>
       )}
