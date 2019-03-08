@@ -26,13 +26,14 @@ export class AppProvider extends React.Component {
     localStorage.setItem('cryptoDash', JSON.stringify({
       test: 'hello'
     }));
-  }
+  };
 
   setPage = page => this.setState({page});
 
   render() {
       return (
           <AppContext.Provider value={this.state}>
+            {/*any component between open and close bracket will be props.children*/}
               {this.props.children}
           </AppContext.Provider>
       )
