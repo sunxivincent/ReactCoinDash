@@ -19,12 +19,15 @@ function getLowerSectionCoins(coinList, filteredCoins) {
 }
 
 export default function ({topSection}) {
-  return <AppContext.Consumer>
-    {({coinList, favorites, filteredCoins}) =>
-      <CoinGridStyled>
-        {getCoinsToDisplay(coinList, topSection, favorites, filteredCoins).map(coinKey =>
-          <CoinTile coinKey={coinKey} topSection={topSection}/>
-        )}
-      </CoinGridStyled>}
+  return (
+    <AppContext.Consumer>
+    {({coinList, favorites, filteredCoins}) => (
+        <CoinGridStyled>
+          {getCoinsToDisplay(coinList, topSection, favorites, filteredCoins).map(coinKey =>
+            <CoinTile key={coinKey} coinKey={coinKey} topSection={topSection}/>
+          )}
+        </CoinGridStyled>
+      )}
   </AppContext.Consumer>
+  );
 }

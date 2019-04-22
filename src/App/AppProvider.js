@@ -18,6 +18,7 @@ export class AppProvider extends React.Component {
         addCoin: this.addCoin,
         removeCoin: this.removeCoin,
         isFavorite: this.isFavorite,
+        setCurrentFavorite: this.setCurrentFavorite,
         setFilteredCoins: this.setFilteredCoins,
       }
   }
@@ -41,20 +42,33 @@ export class AppProvider extends React.Component {
   };
 
   confirmedFavorites = () => {
+    let currentFavorite = this.state.favorites[0];
     this.setState({
       firstVisit:false,
-      page: 'Dashboard'
+      page: 'Dashboard',
+      currentFavorite,
     }, () => {
       this.fetchPrices();
     });
     localStorage.setItem('cryptoDash', JSON.stringify({
-      favorites: this.state.favorites
+      favorites: this.state.favorites,
+      currentFavorite
     }));
   };
 
   setPage = page => this.setState({page});
 
   setFilteredCoins = filteredCoins => this.setState({filteredCoins});
+
+  setCurrentFavorite  = sym => {
+    this.setState({
+      currentFavorite: sym,
+    });
+    localStorage.setItem('cryptoDash', JSON.stringify({
+      ...JSON.parse(localStorage.getItem('cryptoDash')),
+      currentFavorite: sym
+    }));
+  };
 
   render() {
       return (
@@ -66,12 +80,12 @@ export class AppProvider extends React.Component {
   }
 
   savedSettings() {
-    let cryptoDashData = JSON.parse(localStorage.getItem('crytoDash'));
+    let cryptoDashData = JSON.parse(localStorage.getItem('cryptoDash'));
     if (!cryptoDashData) {
       return {page: 'Settings', firstVisit: true}
     }
-    let favorites = {cryptoDashData};
-    return favorites;
+    let {favorites, currentFavorite} = cryptoDashData;
+    return {favorites, currentFavorite};
   }
 
   fetchCoins = async () => {
@@ -82,7 +96,10 @@ export class AppProvider extends React.Component {
   isFavorite = key => _.includes(this.state.favorites, key);
 
   fetchPrices = async () => {
-    if (this.state.firstVisit) return;
+    // if (this.state.firstVisit) {
+    //   console.log(this.state.firstVisit);
+    //   return;
+    // }
     let prices = [];
     for (let i=0; i<this.state.favorites.length; i++) {
       try {

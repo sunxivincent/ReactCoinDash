@@ -14,21 +14,23 @@ function clickCoinHandler(topSection, coinKey, addCoin, removeCoin) {
 }
 
 export default function({coinKey, topSection}) {
-  return <AppContext.Consumer>
-    {({coinList, addCoin, removeCoin, isFavorite}) => {
-      let coin = coinList[coinKey];
-      let TileClass = SelectableTile;
-      if (topSection) {
-        TileClass = DeletableTile;
-      } else if (isFavorite(coinKey)) {
-        TileClass = DisabledTile;
-      }
-      return <TileClass
-        onClick={clickCoinHandler(topSection, coinKey, addCoin, removeCoin)}
-      >
-        <CoinHeaderGrid name={coin.CoinName} symbol={coin.Symbol} topSection={topSection}/>
-        <CoinImage coin={coin}/>
-      </TileClass>
-    }}
-  </AppContext.Consumer>
+  return (
+    <AppContext.Consumer>
+      {({coinList, addCoin, removeCoin, isFavorite}) => {
+        let coin = coinList[coinKey];
+        let TileClass = SelectableTile;
+        if (topSection) {
+          TileClass = DeletableTile;
+        } else if (isFavorite(coinKey)) {
+          TileClass = DisabledTile;
+        }
+        return <TileClass
+          onClick={clickCoinHandler(topSection, coinKey, addCoin, removeCoin)}
+        >
+          <CoinHeaderGrid name={coin.CoinName} symbol={coin.Symbol} topSection={topSection}/>
+          <CoinImage coin={coin}/>
+        </TileClass>
+      }}
+    </AppContext.Consumer>
+  );
 }
